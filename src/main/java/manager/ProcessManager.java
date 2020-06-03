@@ -125,7 +125,7 @@ public class ProcessManager implements Observer {
                 break;
             case "running":
                 freeResource(pcb);
-                runningQueue.remove(0);
+                runningQueue.clear();
                 break;
         }
         return true;
@@ -210,7 +210,7 @@ public class ProcessManager implements Observer {
         PCB pcb = pcbMap.get(pid);
         int status = pcb.getStatus();
         String convertCh = convertStatus(status);
-        System.out.printf("pid: %s, status: %s\n", pid, convertCh);
+        System.out.printf("pid: %s, status: %s, blockReason: %s\n", pid, convertCh, pcb.getBlockReason() == "" ? "isn't blocked" : pcb.getBlockReason());
     }
 
     // 展示所有进程的状态
@@ -221,7 +221,7 @@ public class ProcessManager implements Observer {
             Map.Entry<String, PCB> next = iterator.next();
             int status = next.getValue().getStatus();
             String convertCh = convertStatus(status);
-            System.out.printf("pid: %s, status: %s\n", next.getKey(),convertCh);
+            System.out.printf("pid: %s, status: %s, blockReason: %s\n", next.getKey(),convertCh, next.getValue().getBlockReason() == "" ? "isn't blocked" : next.getValue().getBlockReason());
         }
     }
 
