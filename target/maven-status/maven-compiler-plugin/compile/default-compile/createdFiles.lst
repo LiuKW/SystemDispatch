@@ -1,0 +1,3 @@
+domain\Domain.class
+enums\ProcessStatusEnum.class
+enums\PriorityEnum.class
