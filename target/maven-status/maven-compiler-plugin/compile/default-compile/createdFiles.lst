@@ -1,3 +1,11 @@
+enums\StatusEnum.class
+observer\Observer.class
+struct\PCB.class
+event\impl\FreeResourceEvent.class
+event\impl\StatusChangeEvent.class
 domain\Domain.class
-enums\ProcessStatusEnum.class
-enums\PriorityEnum.class
+resolver\CommandResolver.class
+event\Event.class
+struct\Resource.class
+event\impl\RequestFailEvent.class
+manager\ProcessManager.class

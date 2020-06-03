@@ -14,7 +14,7 @@ public class Domain {
 
 
     public static void main(String[] args) {
-        ProcessManager processManager = new ProcessManager();
+        ProcessManager processManager = ProcessManager.getInstance();
         CommandResolver commandResolver = new CommandResolver(processManager);
 
         Scanner scanner = new Scanner(System.in);

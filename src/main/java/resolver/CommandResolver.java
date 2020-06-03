@@ -35,6 +35,12 @@ public class CommandResolver {
             case "clear":
                 doClear();
                 break;
+            case "rel":
+                doRelease(commands);
+                break;
+            case "list":
+                doList(commands);
+                break;
             default:
                 System.out.println("command not found");
                 return;
@@ -53,18 +59,12 @@ public class CommandResolver {
         // top
         if(commands.length == 1)
         {
-            processManager.showAllProcess();
-            return;
-        }
-        // top all
-        if(commands[1].equals("all"))
-        {
-            processManager.showAllProcess();
+            processManager.showProcess();
             return;
         }
         // top pid
         else
-            processManager.showOneProcess(commands[1]);
+            processManager.showProcess(commands[1]);
     }
 
 
@@ -120,5 +120,30 @@ public class CommandResolver {
             System.out.println();
     }
 
+    /**
+     * release：释放资源
+     * release命令 release
+     */
+    public void doRelease(String commands[])
+    {
+        PCB peek = processManager.getRunningQueue().peek();
+        if(commands.length == 1)
+            processManager.freeResource(peek);
+        else if(commands.length == 2)
+            processManager.freeResource(peek, commands[1]);
+        else
+            processManager.freeResource(peek, commands[1], Integer.valueOf(commands[2]));
+    }
 
+    /**
+     * list：展示所有资源
+     * list 命令 list / list r1
+     */
+    public void doList(String commands[])
+    {
+        if(commands.length == 1)
+            processManager.showResource();
+        else
+            processManager.showResource(commands[1]);
+    }
 }

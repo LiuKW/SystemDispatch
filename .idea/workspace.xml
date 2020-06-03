@@ -2,7 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="211fbd56-b937-4584-a0da-ee84c09c4972" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/Domain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/Domain.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/manager/ProcessManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/manager/ProcessManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/resolver/CommandResolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/resolver/CommandResolver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/struct/Resource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/struct/Resource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/TestS.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TestS.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/OperatorSystem-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/OperatorSystem-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/OperatorSystem.kotlin_module" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/META-INF/OperatorSystem.kotlin_module" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/TestS.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/TestS.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -133,7 +146,8 @@
       <workItem from="1591082994115" duration="11081000" />
       <workItem from="1591097200583" duration="3558000" />
       <workItem from="1591109832322" duration="599000" />
-      <workItem from="1591154128769" duration="51049000" />
+      <workItem from="1591154128769" duration="51433000" />
+      <workItem from="1591209047109" duration="6900000" />
     </task>
     <servers />
   </component>
@@ -161,42 +175,42 @@
       <screen x="0" y="0" width="1536" height="834" />
     </state>
     <state x="549" y="172" key="FileChooserDialogImpl/0.0.1536.834@0.0.1536.834" timestamp="1591100812418" />
-    <state width="1493" height="219" key="GridCell.Tab.0.bottom" timestamp="1591207847334">
+    <state width="1493" height="274" key="GridCell.Tab.0.bottom" timestamp="1591215990051">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state width="1493" height="219" key="GridCell.Tab.0.bottom/0.0.1536.834@0.0.1536.834" timestamp="1591207847334" />
-    <state width="1493" height="219" key="GridCell.Tab.0.center" timestamp="1591207847332">
+    <state width="1493" height="274" key="GridCell.Tab.0.bottom/0.0.1536.834@0.0.1536.834" timestamp="1591215990051" />
+    <state width="1493" height="274" key="GridCell.Tab.0.center" timestamp="1591215990050">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state width="1493" height="219" key="GridCell.Tab.0.center/0.0.1536.834@0.0.1536.834" timestamp="1591207847332" />
-    <state width="1493" height="219" key="GridCell.Tab.0.left" timestamp="1591207847332">
+    <state width="1493" height="274" key="GridCell.Tab.0.center/0.0.1536.834@0.0.1536.834" timestamp="1591215990050" />
+    <state width="1493" height="274" key="GridCell.Tab.0.left" timestamp="1591215990049">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state width="1493" height="219" key="GridCell.Tab.0.left/0.0.1536.834@0.0.1536.834" timestamp="1591207847332" />
-    <state width="1493" height="219" key="GridCell.Tab.0.right" timestamp="1591207847333">
+    <state width="1493" height="274" key="GridCell.Tab.0.left/0.0.1536.834@0.0.1536.834" timestamp="1591215990049" />
+    <state width="1493" height="274" key="GridCell.Tab.0.right" timestamp="1591215990050">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state width="1493" height="219" key="GridCell.Tab.0.right/0.0.1536.834@0.0.1536.834" timestamp="1591207847333" />
-    <state width="1493" height="265" key="GridCell.Tab.1.bottom" timestamp="1591199870823">
+    <state width="1493" height="274" key="GridCell.Tab.0.right/0.0.1536.834@0.0.1536.834" timestamp="1591215990050" />
+    <state width="1493" height="265" key="GridCell.Tab.1.bottom" timestamp="1591208216343">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state width="1493" height="265" key="GridCell.Tab.1.bottom/0.0.1536.834@0.0.1536.834" timestamp="1591199870823" />
-    <state width="1493" height="265" key="GridCell.Tab.1.center" timestamp="1591199870822">
+    <state width="1493" height="265" key="GridCell.Tab.1.bottom/0.0.1536.834@0.0.1536.834" timestamp="1591208216343" />
+    <state width="1493" height="265" key="GridCell.Tab.1.center" timestamp="1591208216342">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state width="1493" height="265" key="GridCell.Tab.1.center/0.0.1536.834@0.0.1536.834" timestamp="1591199870822" />
-    <state width="1493" height="265" key="GridCell.Tab.1.left" timestamp="1591199870822">
+    <state width="1493" height="265" key="GridCell.Tab.1.center/0.0.1536.834@0.0.1536.834" timestamp="1591208216342" />
+    <state width="1493" height="265" key="GridCell.Tab.1.left" timestamp="1591208216342">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state width="1493" height="265" key="GridCell.Tab.1.left/0.0.1536.834@0.0.1536.834" timestamp="1591199870822" />
-    <state width="1493" height="265" key="GridCell.Tab.1.right" timestamp="1591199870823">
+    <state width="1493" height="265" key="GridCell.Tab.1.left/0.0.1536.834@0.0.1536.834" timestamp="1591208216342" />
+    <state width="1493" height="265" key="GridCell.Tab.1.right" timestamp="1591208216342">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state width="1493" height="265" key="GridCell.Tab.1.right/0.0.1536.834@0.0.1536.834" timestamp="1591199870823" />
-    <state x="449" y="241" key="com.intellij.ide.util.TipDialog" timestamp="1591154125610">
+    <state width="1493" height="265" key="GridCell.Tab.1.right/0.0.1536.834@0.0.1536.834" timestamp="1591208216342" />
+    <state x="449" y="241" key="com.intellij.ide.util.TipDialog" timestamp="1591209050903">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state x="449" y="241" key="com.intellij.ide.util.TipDialog/0.0.1536.834@0.0.1536.834" timestamp="1591154125610" />
+    <state x="449" y="241" key="com.intellij.ide.util.TipDialog/0.0.1536.834@0.0.1536.834" timestamp="1591209050903" />
     <state x="425" y="189" key="run.anything.popup" timestamp="1591207571218">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
@@ -205,16 +219,5 @@
       <screen x="0" y="0" width="1536" height="834" />
     </state>
     <state x="47" y="154" width="672" height="678" key="search.everywhere.popup/0.0.1536.834@0.0.1536.834" timestamp="1591180667451" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/domain/Domain.java</url>
-          <line>25</line>
-          <option name="timeStamp" value="22" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

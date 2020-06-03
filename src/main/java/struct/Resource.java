@@ -29,12 +29,24 @@ public class Resource {
     // 回收资源
     public boolean recoveryResource(PCB pcb, int count)
     {
-        if(pcb.getResources().get(name) == null)
+        if(!pcb.getResources().containsKey(name))
         {
+            //System.out.println("process not own this resource\n");
             return false;
         }
-        Integer resources = pcb.getResources().get(name);
-        this.num += count;
+        if(count > pcb.getResources().get(name))
+        {
+            //System.out.println(pcb.getPid() + "has not enough resource to release\n");
+            return false;
+        }
+        num += count;
+        int i = pcb.getResources().get(name).intValue();
+        i -= count;
+        pcb.getResources().put(name, i);
+        if(pcb.getResources().get(name) == 0)
+            pcb.getResources().remove(name);
+
+        System.out.printf("%s released %d %s\n", pcb.getPid(), count, name);
         FreeResourceEvent freeResourceEvent = new FreeResourceEvent(this);
         processManager.onAction(freeResourceEvent);
         return true;
@@ -45,11 +57,12 @@ public class Resource {
     public boolean distributionReousrce(PCB pcb , int count)
     {
         // 资源不足
-        if(count > this.num)
+        if(count > num)
         {
             RequestFailEvent requestFailEvent = new RequestFailEvent(pcb);
             pcb.setBlockReason(name);
             processManager.onAction(requestFailEvent);
+            System.out.println("resources not enough, request failed, process is transfered to block queue");
             return false;
         }
         if(!pcb.getResources().containsKey(name))
@@ -63,7 +76,7 @@ public class Resource {
             resources.put(name, resources.get(name) + count);
             num -= count;
         }
-
+        System.out.println("request resource secceed");
         return true;
     }
 

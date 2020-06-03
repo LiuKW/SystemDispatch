@@ -1,5 +1,11 @@
+E:\Idea_project\OperatorSystem\src\main\java\observer\Observer.java
 E:\Idea_project\OperatorSystem\src\main\java\struct\Resource.java
-E:\Idea_project\OperatorSystem\src\main\java\enums\ProcessStatusEnum.java
-E:\Idea_project\OperatorSystem\src\main\java\enums\PriorityEnum.java
+E:\Idea_project\OperatorSystem\src\main\java\event\impl\RequestFailEvent.java
+E:\Idea_project\OperatorSystem\src\main\java\manager\ProcessManager.java
+E:\Idea_project\OperatorSystem\src\main\java\event\Event.java
+E:\Idea_project\OperatorSystem\src\main\java\resolver\CommandResolver.java
+E:\Idea_project\OperatorSystem\src\main\java\event\impl\FreeResourceEvent.java
+E:\Idea_project\OperatorSystem\src\main\java\enums\StatusEnum.java
 E:\Idea_project\OperatorSystem\src\main\java\domain\Domain.java
+E:\Idea_project\OperatorSystem\src\main\java\event\impl\StatusChangeEvent.java
 E:\Idea_project\OperatorSystem\src\main\java\struct\PCB.java

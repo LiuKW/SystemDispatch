@@ -85,6 +85,7 @@ public class ProcessManager implements Observer {
         pcb.setPid(pid).setPriority(priority).setProcessManager(this);
         pcbMap.put(pid, pcb);
         waitQueue.add(pcb);
+        System.out.println("creat process seccessed");
         return true;
     }
 
@@ -120,6 +121,27 @@ public class ProcessManager implements Observer {
 //        }
     }
 
+
+    public void freeResource(PCB pcb, String resourceName)
+    {
+        resources.forEach(item -> {
+            if(pcb.getResources().containsKey(resourceName))
+            {
+                item.recoveryResource(pcb, pcb.getResources().get(item.getName()));
+            }
+        });
+    }
+
+    public void freeResource(PCB pcb, String resourceName, int count)
+    {
+        resources.forEach(item -> {
+            if(pcb.getResources().containsKey(resourceName))
+            {
+                item.recoveryResource(pcb, count);
+            }
+        });
+        //System.out.println(pcb.getPid() + " has not own this resource");
+    }
 
     // 销毁进程
     public boolean dropProcess(PCB pcb)
@@ -211,7 +233,25 @@ public class ProcessManager implements Observer {
                 return "runningQueue";
         }
         return "";
+    }
 
+
+
+    // 展示所有静态资源
+    public void showResource()
+    {
+        resources.forEach(item -> {
+            System.out.printf("resource: %s\t\t count: %d\t\t\n", item.getName(), item.getNum());
+        });
+    }
+
+    // 展示一个资源
+    public void showResource(String resourceName)
+    {
+        resources.forEach(item -> {
+            if(item.getName().equals(resourceName))
+                System.out.printf("resource: %s\t\t count: %d\t\t\n", item.getName(), item.getNum());
+        });
     }
 
 
@@ -223,7 +263,7 @@ public class ProcessManager implements Observer {
     }
 
     // 展示一个进程的状态
-    public void showOneProcess(String pid)
+    public void showProcess(String pid)
     {
         PCB pcb = pcbMap.get(pid);
         int status = pcb.getStatus();
@@ -232,7 +272,7 @@ public class ProcessManager implements Observer {
     }
 
     // 展示所有进程的状态
-    public void showAllProcess()
+    public void showProcess()
     {
         Iterator<Map.Entry<String, PCB>> iterator = pcbMap.entrySet().iterator();
         while (iterator.hasNext()) {
@@ -369,11 +409,13 @@ public class ProcessManager implements Observer {
             });
             return;
         }
-
     }
 
     public String toString() {
         return getClass().getName();
     }
 
+    private ProcessManager() {}
+    private static final ProcessManager processManager = new ProcessManager();
+    public static ProcessManager getInstance() { return processManager; }
 }
