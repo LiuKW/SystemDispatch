@@ -94,12 +94,18 @@ public class ProcessManager implements Observer {
     // 进程释放资源
     public void freeResource(PCB pcb)
     {
-        resources.forEach(item -> {
-            if(pcb.getResources().containsKey(item.getName()))
+//        resources.forEach(item -> {
+//            if(pcb.getResources().containsKey(item.getName()))
+//            {
+//                item.recoveryResource(pcb, pcb.getResources().get(item.getName()));
+//            }
+//        });
+        for (Resource resource : resources) {
+            if(pcb.getResources().containsKey(resource.getName()))
             {
-                item.recoveryResource(pcb, pcb.getResources().get(item.getName()));
+                resource.recoveryResource(pcb, pcb.getResources().get(resource.getName()));
             }
-        });
+        }
     }
 
 
@@ -123,7 +129,7 @@ public class ProcessManager implements Observer {
                 freeResource(pcb);
                 waitQueue.remove(pcb);
                 break;
-            case "running":
+            case "runningQueue":
                 freeResource(pcb);
                 runningQueue.clear();
                 break;
