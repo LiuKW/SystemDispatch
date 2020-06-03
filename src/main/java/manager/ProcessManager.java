@@ -7,7 +7,6 @@ import event.impl.RequestFailEvent;
 import event.impl.StatusChangeEvent;
 import lombok.Data;
 import observer.Observer;
-import org.omg.CORBA.Object;
 import struct.PCB;
 import struct.Resource;
 
@@ -21,13 +20,21 @@ import java.util.*;
 public class ProcessManager implements Observer {
 
     // 就绪队列
-    private PriorityQueue<PCB> readyQueue = new PriorityQueue<>(11, (pcb1,pcb2)->{return pcb2.getPriority()-pcb1.getPriority();});
+    private PriorityQueue<PCB> readyQueue = new PriorityQueue<>(11, (pcb1,pcb2)->{
+        if(pcb1.getDispatchTime() == pcb2.getDispatchTime())
+            return pcb2.getPriority() - pcb1.getPriority();
+        return pcb1.getDispatchTime()-pcb2.getDispatchTime();
+    });
 
     // 阻塞队列
     private PriorityQueue<PCB> blockingQueue = new PriorityQueue<>();
 
     // 等待队列
-    private Queue<PCB> waitQueue = new LinkedList<>();
+    private PriorityQueue<PCB> waitQueue = new PriorityQueue<>(11, (pcb1,pcb2)->{
+        if(pcb1.getDispatchTime() == pcb2.getDispatchTime())
+            return pcb2.getPriority() - pcb1.getPriority();
+        return pcb1.getDispatchTime()-pcb2.getDispatchTime();
+    });
 
     // 正在运行的进程
     private final Queue<PCB> runningQueue = new LinkedList<>();
@@ -80,32 +87,32 @@ public class ProcessManager implements Observer {
     // 进程申请资源
     public void reqeustResource(PCB pcb , String resourceName, Integer count)
     {
-//        resources.forEach(item -> {
-//            if(item.getName().equals(resourceName))
-//                item.distributionReousrce(pcb, count);
-//        });
-        for (Resource resource : resources) {
-            if(resource.getName().equals(resourceName))
-                resource.distributionReousrce(pcb, count);
-        }
+        resources.forEach(item -> {
+            if(item.getName().equals(resourceName))
+                item.distributionReousrce(pcb, count);
+        });
+//        for (Resource resource : resources) {
+//            if(resource.getName().equals(resourceName))
+//                resource.distributionReousrce(pcb, count);
+//        }
     }
 
 
     // 进程释放资源
     public void freeResource(PCB pcb)
     {
-//        resources.forEach(item -> {
-//            if(pcb.getResources().containsKey(item.getName()))
-//            {
-//                item.recoveryResource(pcb, pcb.getResources().get(item.getName()));
-//            }
-//        });
-        for (Resource resource : resources) {
-            if(pcb.getResources().containsKey(resource.getName()))
+        resources.forEach(item -> {
+            if(pcb.getResources().containsKey(item.getName()))
             {
-                resource.recoveryResource(pcb, pcb.getResources().get(resource.getName()));
+                item.recoveryResource(pcb, pcb.getResources().get(item.getName()));
             }
-        }
+        });
+//        for (Resource resource : resources) {
+//            if(pcb.getResources().containsKey(resource.getName()))
+//            {
+//                resource.recoveryResource(pcb, pcb.getResources().get(resource.getName()));
+//            }
+//        }
     }
 
 
@@ -203,7 +210,7 @@ public class ProcessManager implements Observer {
     }
 
 
-    // 状态转化成中文
+    // 状态转化成英文
     public String convertStatus(int status)
     {
         String convert2Ch = status == StatusEnum.READY.getCode() ? StatusEnum.READY.getMessage() : (status == StatusEnum.BLOCK.getCode() ? StatusEnum.BLOCK.getMessage() : (status == StatusEnum.RUNNING.getCode() ? StatusEnum.RUNNING.getMessage() : StatusEnum.READY.getMessage()));
@@ -216,7 +223,7 @@ public class ProcessManager implements Observer {
         PCB pcb = pcbMap.get(pid);
         int status = pcb.getStatus();
         String convertCh = convertStatus(status);
-        System.out.printf("pid: %s, status: %s, blockReason: %s\n", pid, convertCh, pcb.getBlockReason() == "" ? "isn't blocked" : pcb.getBlockReason());
+        System.out.printf("pid: %s\t\t status: %s\t\t dispatchTime: %d\t\t blockReason: %s\n", pid, convertCh, pcb.getDispatchTime(), pcb.getBlockReason() == "" ? "not blocked" : pcb.getBlockReason());
     }
 
     // 展示所有进程的状态
@@ -227,8 +234,10 @@ public class ProcessManager implements Observer {
             Map.Entry<String, PCB> next = iterator.next();
             int status = next.getValue().getStatus();
             String convertCh = convertStatus(status);
-            System.out.printf("pid: %s, status: %s, blockReason: %s\n", next.getKey(),convertCh, next.getValue().getBlockReason() == "" ? "isn't blocked" : next.getValue().getBlockReason());
+            System.out.printf("pid: %s\t\t status: %s\t\t dispatchTime: %d\t\t blockReason: %s\n", next.getKey(),convertCh, next.getValue().getDispatchTime(), next.getValue().getBlockReason() == "" ? "not blocked" : next.getValue().getBlockReason());
         }
+        if(pcbMap.size() == 0)
+            System.out.println("System has no process");
     }
 
     // 展示当前正在运行的进程
@@ -298,7 +307,8 @@ public class ProcessManager implements Observer {
         // 从就绪队列中拿出一个出来
         if(readyQueue.size() != 0)
         {
-            readyQueue.peek().setStatus(StatusEnum.RUNNING.getCode());
+            PCB peek = readyQueue.peek();
+            peek.setDispatchTime(peek.getDispatchTime()+1).setStatus(StatusEnum.RUNNING.getCode());
             System.out.printf("%s is running\n", runningQueue.peek().getPid());
             return;
         }

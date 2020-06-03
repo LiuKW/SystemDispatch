@@ -74,7 +74,10 @@ public class CommandResolver {
      */
     public void doKill(String commands[]) {
         PCB pcb = processManager.findPCB(commands[1]);
-        processManager.dropProcess(pcb);
+        if(pcb != null)
+            processManager.dropProcess(pcb);
+        else
+            System.out.println("no appoint process in this system");
     }
 
     /**
@@ -112,12 +115,9 @@ public class CommandResolver {
      */
     public void doClear()
     {
-        try {
-            Runtime.getRuntime().exec("cmd cls");
-        }catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+        int i = 50;
+        while(i-- != 0)
+            System.out.println();
     }
 
 

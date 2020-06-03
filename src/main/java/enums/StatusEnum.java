@@ -10,7 +10,7 @@ public enum StatusEnum {
     WAIT(0, "WAIT"),
     BLOCK(1, "BLOCK"),
     READY(2, "READY"),
-    RUNNING(3, "RUNNING")
+    RUNNING(3, "RUN")
     ;
 
     private int code;

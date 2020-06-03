@@ -18,7 +18,7 @@ public class PCB {
     private Integer priority;
     private Integer status;     // 当前状态
     private String blockReason = ""; //阻塞原因，等待那个资源
-
+    private int dispatchTime = 0;
     private Observer processManager;
 
 
