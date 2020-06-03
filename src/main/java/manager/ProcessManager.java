@@ -27,13 +27,15 @@ public class ProcessManager implements Observer {
     private PriorityQueue<PCB> blockingQueue = new PriorityQueue<>();
 
     // 等待队列
-    private PriorityQueue<PCB> waitQueue = new PriorityQueue<>(11, (pcb1,pcb2)->{return pcb2.getPriority()-pcb1.getPriority();});
+    private Queue<PCB> waitQueue = new LinkedList<>();
+
+    // 正在运行的进程
+    private final Queue<PCB> runningQueue = new LinkedList<>();
 
     // 保存当前系统中所有的线程
     private Map<String, PCB> pcbMap = new HashMap<>();
 
-    // 正在运行的进程
-    private final Queue<PCB> runningQueue = new LinkedList<>();
+
 
     // 创建了三个资源
     private List<Resource> resources = new ArrayList<>();
