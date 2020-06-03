@@ -35,6 +35,11 @@ public class ProcessManager implements Observer {
             return pcb2.getPriority() - pcb1.getPriority();
         return pcb1.getDispatchTime()-pcb2.getDispatchTime();
     });
+    /**
+     * 这里想用方法引用，但是会报错，报无法推断参数错误。。。why
+     * TODO: why cannot infer arguments
+     */
+
 
     // 正在运行的进程
     private final Queue<PCB> runningQueue = new LinkedList<>();
