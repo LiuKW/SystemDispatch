@@ -85,7 +85,7 @@ public class ProcessManager implements Observer {
         pcb.setPid(pid).setPriority(priority).setProcessManager(this);
         pcbMap.put(pid, pcb);
         waitQueue.add(pcb);
-        System.out.println("creat process seccessed");
+        System.out.println("creat process succeed");
         return true;
     }
 
@@ -157,6 +157,33 @@ public class ProcessManager implements Observer {
         }
         return true;
     }
+
+    // time out
+    public void timeOut(PCB pcb)
+    {
+        pcb.setBlockReason("time out");
+        pcb.setStatus(StatusEnum.BLOCK.getCode());
+        System.out.printf("%s is blocked,because of time out\n", pcb.getPid());
+    }
+
+    // 把因为time out而阻塞的进程调度到就绪队列
+    public void timeOut2Ready()
+    {
+        if(blockQueue.isEmpty())
+        {
+            System.out.println("block queue is empty");
+            return;
+        }
+        blockQueue.forEach(item->{
+            if(item.getBlockReason().equals("time out"))
+            {
+                item.setBlockReason("");
+                item.setStatus(StatusEnum.READY.getCode());
+                System.out.printf("%s is tranfered to ready queue\n", item.getPid());
+            }
+        });
+    }
+
 
     // 找到pcb
     public PCB findPCB(String pid)

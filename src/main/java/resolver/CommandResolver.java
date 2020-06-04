@@ -41,6 +41,12 @@ public class CommandResolver {
             case "list":
                 doList(commands);
                 break;
+            case "to":
+                doTimeOut(commands);
+                break;
+            case "to2run":
+                doTimeOut2Run(commands);
+                break;
             default:
                 System.out.println("command not found");
                 return;
@@ -146,4 +152,26 @@ public class CommandResolver {
         else
             processManager.showResource(commands[1]);
     }
+
+
+    /**
+     *
+     */
+    public void doTimeOut(String commands[])
+    {
+        PCB peek = processManager.getRunningQueue().peek();
+        if(peek == null)
+        {
+            System.out.println("当前没有进程正在运行，无法申请资源");
+            return;
+        }
+
+        processManager.timeOut(peek);
+    }
+
+    public void doTimeOut2Run(String commands[])
+    {
+        processManager.timeOut2Ready();
+    }
+
 }
