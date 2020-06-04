@@ -16,5 +16,4 @@ public enum StatusEnum {
     private int code;
     private String message;
 
-
 }

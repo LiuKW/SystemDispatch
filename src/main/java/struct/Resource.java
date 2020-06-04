@@ -20,7 +20,6 @@ public class Resource {
     // 资源数量
     private Integer num;
 
-    // 监听者
     private Observer processManager;
 
 
@@ -76,7 +75,7 @@ public class Resource {
             resources.put(name, resources.get(name) + count);
             num -= count;
         }
-        System.out.println("request resource secceed");
+        System.out.println("request resource succeed");
         return true;
     }
 

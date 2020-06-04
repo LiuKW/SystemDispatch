@@ -107,9 +107,7 @@ public class TestS {
     {
         ProcessManager processManager = ProcessManager.getInstance();
         Assert.assertNotNull(processManager.getMap());
-
     }
-
 
 
 }

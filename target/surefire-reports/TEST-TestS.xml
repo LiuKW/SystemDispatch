@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="5" failures="0" name="TestS" time="0.511" errors="0" skipped="0">
+<testsuite tests="5" failures="0" name="TestS" time="0.199" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="D:\application\jdk\jre\bin"/>
@@ -64,9 +64,9 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="TestS" name="test01" time="0.433"/>
-  <testcase classname="TestS" name="test02" time="0.002"/>
-  <testcase classname="TestS" name="test03" time="0.005"/>
-  <testcase classname="TestS" name="test04" time="0.02"/>
-  <testcase classname="TestS" name="test05" time="0.051"/>
+  <testcase classname="TestS" name="test01" time="0.174"/>
+  <testcase classname="TestS" name="test02" time="0.003"/>
+  <testcase classname="TestS" name="test03" time="0.003"/>
+  <testcase classname="TestS" name="test04" time="0.008"/>
+  <testcase classname="TestS" name="test05" time="0.011"/>
 </testsuite>

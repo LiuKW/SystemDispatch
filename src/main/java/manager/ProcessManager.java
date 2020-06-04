@@ -27,7 +27,7 @@ public class ProcessManager implements Observer {
     });
 
     // 阻塞队列
-    private PriorityQueue<PCB> blockingQueue = new PriorityQueue<>();
+    private PriorityQueue<PCB> blockQueue = new PriorityQueue<>();
 
     // 等待队列
     private PriorityQueue<PCB> waitQueue = new PriorityQueue<>(11, (pcb1,pcb2)->{
@@ -69,7 +69,7 @@ public class ProcessManager implements Observer {
     private Map<Integer, Queue> map = new HashMap<>();
     {
         map.put(StatusEnum.READY.getCode(), readyQueue);
-        map.put(StatusEnum.BLOCK.getCode(), blockingQueue);
+        map.put(StatusEnum.BLOCK.getCode(), blockQueue);
         map.put(StatusEnum.WAIT.getCode(), waitQueue);
         map.put(StatusEnum.RUNNING.getCode(), runningQueue);
     }
@@ -97,10 +97,6 @@ public class ProcessManager implements Observer {
             if(item.getName().equals(resourceName))
                 item.distributionReousrce(pcb, count);
         });
-//        for (Resource resource : resources) {
-//            if(resource.getName().equals(resourceName))
-//                resource.distributionReousrce(pcb, count);
-//        }
     }
 
 
@@ -113,12 +109,6 @@ public class ProcessManager implements Observer {
                 item.recoveryResource(pcb, pcb.getResources().get(item.getName()));
             }
         });
-//        for (Resource resource : resources) {
-//            if(pcb.getResources().containsKey(resource.getName()))
-//            {
-//                resource.recoveryResource(pcb, pcb.getResources().get(resource.getName()));
-//            }
-//        }
     }
 
 
@@ -136,11 +126,8 @@ public class ProcessManager implements Observer {
     {
         resources.forEach(item -> {
             if(pcb.getResources().containsKey(resourceName))
-            {
                 item.recoveryResource(pcb, count);
-            }
         });
-        //System.out.println(pcb.getPid() + " has not own this resource");
     }
 
     // 销毁进程
@@ -155,9 +142,9 @@ public class ProcessManager implements Observer {
                 freeResource(pcb);
                 readyQueue.remove(pcb);
                 break;
-            case "blockingQueue":
+            case "blockQueue":
                 freeResource(pcb);
-                blockingQueue.remove(pcb);
+                blockQueue.remove(pcb);
                 break;
             case "waitQueue":
                 freeResource(pcb);
@@ -197,8 +184,8 @@ public class ProcessManager implements Observer {
                 queue.add(poll);
                 break;
 
-            case "blockingQueue":
-                PCB poll1 = blockingQueue.poll();
+            case "blockQueue":
+                PCB poll1 = blockQueue.poll();
                 Queue queue1 = map.get(pcb.getStatus());
                 queue1.add(poll1);
                 break;
@@ -208,6 +195,7 @@ public class ProcessManager implements Observer {
                 Queue queue2 = map.get(pcb.getStatus());
                 queue2.add(poll2);
                 break;
+
             case "runningQueue":
                 PCB poll3 = runningQueue.poll();
                 Queue queue3 = map.get(pcb.getStatus());
@@ -223,8 +211,8 @@ public class ProcessManager implements Observer {
     {
         if(readyQueue.contains(pcb))
             return "readyQueue";
-        if(blockingQueue.contains(pcb))
-            return "blockingQueue";
+        if(blockQueue.contains(pcb))
+            return "blockQueue";
         if(waitQueue.contains(pcb))
             return "waitQueue";
         if(runningQueue.size() != 0)
@@ -268,7 +256,7 @@ public class ProcessManager implements Observer {
         PCB pcb = pcbMap.get(pid);
         int status = pcb.getStatus();
         String convertCh = convertStatus(status);
-        System.out.printf("pid: %s\t\t status: %s\t\t dispatchTime: %d\t\t blockReason: %s\n", pid, convertCh, pcb.getDispatchTime(), pcb.getBlockReason() == "" ? "not blocked" : pcb.getBlockReason());
+        System.out.printf("pid: %s\t\t status: %s\t\t priority: %d\t\t dispatchTime: %d\t\t blockReason: %s\n", pid, convertCh, pcb.getPriority().intValue(), pcb.getDispatchTime(), pcb.getBlockReason() == "" ? "not blocked" : pcb.getBlockReason());
     }
 
     // 展示所有进程的状态
@@ -279,7 +267,7 @@ public class ProcessManager implements Observer {
             Map.Entry<String, PCB> next = iterator.next();
             int status = next.getValue().getStatus();
             String convertCh = convertStatus(status);
-            System.out.printf("pid: %s\t\t status: %s\t\t dispatchTime: %d\t\t blockReason: %s\n", next.getKey(),convertCh, next.getValue().getDispatchTime(), next.getValue().getBlockReason() == "" ? "not blocked" : next.getValue().getBlockReason());
+            System.out.printf("pid: %s\t\t status: %s\t\t priority: %d\t\t dispatchTime: %d\t\t blockReason: %s\n", next.getKey(),convertCh, next.getValue().getPriority().intValue(), next.getValue().getDispatchTime(), next.getValue().getBlockReason() == "" ? "not blocked" : next.getValue().getBlockReason());
         }
         if(pcbMap.size() == 0)
             System.out.println("System has no process");
@@ -299,7 +287,7 @@ public class ProcessManager implements Observer {
     }
 
 
-    // 自动调度
+    // 模拟自动调度
 //    public void dispatch()
 //    {
 //        if(waitQueue.size() != 0)
@@ -336,7 +324,7 @@ public class ProcessManager implements Observer {
 //            System.out.println("System is free now\n");
 //    }
 
-    // 自动调度
+    // 模拟自动调度
     public void dispatch()
     {
         if(runningQueue.size() != 0)
@@ -360,14 +348,10 @@ public class ProcessManager implements Observer {
         else
         {
             if(runningQueue.size() != 0)
-            {
                 System.out.printf("%s is still running\n", runningQueue.peek().getPid());
-            }
             else
                 System.out.println("System free");
         }
-
-
     }
 
 
@@ -402,7 +386,7 @@ public class ProcessManager implements Observer {
         if(event instanceof FreeResourceEvent)
         {
             Resource resource = (Resource)event.getSource();
-            blockingQueue.forEach(item->{
+            blockQueue.forEach(item->{
                 item.getBlockReason().equals(resource.getName());
                 item.setBlockReason("");
                 item.setStatus(StatusEnum.READY.getCode());
@@ -411,9 +395,9 @@ public class ProcessManager implements Observer {
         }
     }
 
-    public String toString() {
-        return getClass().getName();
-    }
+//    public String toString() {
+//        return getClass().getName();
+//    }
 
     private ProcessManager() {}
     private static final ProcessManager processManager = new ProcessManager();
