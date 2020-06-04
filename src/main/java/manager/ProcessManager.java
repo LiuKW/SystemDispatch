@@ -105,9 +105,7 @@ public class ProcessManager implements Observer {
     {
         resources.forEach(item -> {
             if(pcb.getResources().containsKey(item.getName()))
-            {
                 item.recoveryResource(pcb, pcb.getResources().get(item.getName()));
-            }
         });
     }
 
