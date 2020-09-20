@@ -1,6 +1,5 @@
 package manager;
 
-import comparator.PCBDispatchComparator;
 import enums.StatusEnum;
 import event.Event;
 import event.impl.FreeResourceEvent;
@@ -8,6 +7,7 @@ import event.impl.RequestFailEvent;
 import event.impl.StatusChangeEvent;
 import lombok.Data;
 import observer.Observer;
+import rule.PCBDispatchRule;
 import struct.PCB;
 import struct.Resource;
 
@@ -21,17 +21,13 @@ import java.util.*;
 public class ProcessManager implements Observer {
 
     // 就绪队列
-    private final Queue<PCB> readyQueue = new PriorityQueue<>(11, (pcb1, pcb2)->{
-        if(pcb1.getDispatchTime() == pcb2.getDispatchTime())
-            return pcb2.getPriority() - pcb1.getPriority();
-        return pcb1.getDispatchTime()-pcb2.getDispatchTime();
-    });
+    private final Queue<PCB> readyQueue = new PriorityQueue<>(11, PCBDispatchRule::dispatchTimeFirst);
 
     // 阻塞队列
     private final Queue<PCB> blockQueue = new PriorityQueue<>();
 
     // 等待队列
-    private final Queue<PCB> waitQueue = new PriorityQueue<>();
+    private final Queue<PCB> waitQueue = new PriorityQueue<>(11, PCBDispatchRule::dispatchTimeFirst);
 
     // 正在运行的进程
     private final Queue<PCB> runningQueue = new LinkedList<>();
