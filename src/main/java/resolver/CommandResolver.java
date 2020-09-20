@@ -56,15 +56,13 @@ public class CommandResolver {
     /**
      * top 命令
      * top 命令格式
-     *      top：显示当前运行的进程
+     *      top：显示所有运行的进程
      *      top pid：显示pid
-     *      top all：显示全部进程
      */
 
     public void doTop(String commands[]) {
         // top
-        if(commands.length == 1)
-        {
+        if(commands.length == 1)  {
             processManager.showProcess();
             return;
         }

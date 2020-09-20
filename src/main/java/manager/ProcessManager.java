@@ -1,5 +1,6 @@
 package manager;
 
+import comparator.PCBDispatchComparator;
 import enums.StatusEnum;
 import event.Event;
 import event.impl.FreeResourceEvent;
@@ -20,37 +21,28 @@ import java.util.*;
 public class ProcessManager implements Observer {
 
     // 就绪队列
-    private PriorityQueue<PCB> readyQueue = new PriorityQueue<>(11, (pcb1,pcb2)->{
+    private final Queue<PCB> readyQueue = new PriorityQueue<>(11, (pcb1, pcb2)->{
         if(pcb1.getDispatchTime() == pcb2.getDispatchTime())
             return pcb2.getPriority() - pcb1.getPriority();
         return pcb1.getDispatchTime()-pcb2.getDispatchTime();
     });
 
     // 阻塞队列
-    private PriorityQueue<PCB> blockQueue = new PriorityQueue<>();
+    private final Queue<PCB> blockQueue = new PriorityQueue<>();
 
     // 等待队列
-    private PriorityQueue<PCB> waitQueue = new PriorityQueue<>(11, (pcb1,pcb2)->{
-        if(pcb1.getDispatchTime() == pcb2.getDispatchTime())
-            return pcb2.getPriority() - pcb1.getPriority();
-        return pcb1.getDispatchTime()-pcb2.getDispatchTime();
-    });
-    /**
-     * 这里想用方法引用，但是会报错，报无法推断参数错误。。。why
-     * TODO: why cannot infer arguments
-     */
-
+    private final Queue<PCB> waitQueue = new PriorityQueue<>();
 
     // 正在运行的进程
     private final Queue<PCB> runningQueue = new LinkedList<>();
 
     // 保存当前系统中所有的线程
-    private Map<String, PCB> pcbMap = new HashMap<>();
+    private final Map<String, PCB> pcbMap = new HashMap<>();
 
 
 
     // 创建了三个资源
-    private List<Resource> resources = new ArrayList<>();
+    private final List<Resource> resources = new ArrayList<>();
     {
         Resource resource1 = new Resource();
         Resource resource2 = new Resource();
@@ -66,7 +58,7 @@ public class ProcessManager implements Observer {
 
 
     // 状态，队列映射
-    private Map<Integer, Queue> map = new HashMap<>();
+    private final Map<Integer, Queue> map = new HashMap<>();
     {
         map.put(StatusEnum.READY.getCode(), readyQueue);
         map.put(StatusEnum.BLOCK.getCode(), blockQueue);
@@ -85,7 +77,7 @@ public class ProcessManager implements Observer {
         pcb.setPid(pid).setPriority(priority).setProcessManager(this);
         pcbMap.put(pid, pcb);
         waitQueue.add(pcb);
-        System.out.println("creat process succeed");
+        System.out.println("creat przocess succeed");
         return true;
     }
 
@@ -114,9 +106,7 @@ public class ProcessManager implements Observer {
     {
         resources.forEach(item -> {
             if(pcb.getResources().containsKey(resourceName))
-            {
                 item.recoveryResource(pcb, pcb.getResources().get(item.getName()));
-            }
         });
     }
 
@@ -156,47 +146,6 @@ public class ProcessManager implements Observer {
         return true;
     }
 
-    // time out
-    public void timeOut(PCB pcb)
-    {
-        pcb.setBlockReason("time out");
-        pcb.setStatus(StatusEnum.BLOCK.getCode());
-        System.out.printf("%s is blocked,because of time out\n", pcb.getPid());
-    }
-
-    // 把因为time out而阻塞的进程调度到就绪队列
-    public void timeOut2Ready()
-    {
-        if(blockQueue.isEmpty())
-        {
-            System.out.println("block queue is empty");
-            return;
-        }
-        blockQueue.forEach(item->{
-            if(item.getBlockReason().equals("time out"))
-            {
-                item.setBlockReason("");
-                item.setStatus(StatusEnum.READY.getCode());
-                System.out.printf("%s is tranfered to ready queue\n", item.getPid());
-            }
-        });
-    }
-
-
-    // 找到pcb
-    public PCB findPCB(String pid)
-    {
-        return pcbMap.get(pid);
-    }
-
-
-
-    // 状态转化
-    public boolean changeStatus(PCB pcb, Integer status)
-    {
-        pcb.setStatus(status);
-        return true;
-    }
 
 
     // 调度
@@ -246,7 +195,25 @@ public class ProcessManager implements Observer {
                 return "runningQueue";
         }
         return "";
+  }
+
+
+
+    // 找到pcb
+    public PCB findPCB(String pid)
+    {
+        return pcbMap.get(pid);
     }
+
+
+
+    // 状态转化
+    public boolean changeStatus(PCB pcb, Integer status)
+    {
+        pcb.setStatus(status);
+        return true;
+    }
+
 
 
 
@@ -312,7 +279,7 @@ public class ProcessManager implements Observer {
     }
 
 
-    // 模拟自动调度
+//    //模拟自动调度
 //    public void dispatch()
 //    {
 //        if(waitQueue.size() != 0)
@@ -348,6 +315,35 @@ public class ProcessManager implements Observer {
 //        else
 //            System.out.println("System is free now\n");
 //    }
+
+
+    // time out
+    public void timeOut(PCB pcb)
+    {
+        pcb.setBlockReason("time out");
+        pcb.setStatus(StatusEnum.BLOCK.getCode());
+        System.out.printf("%s is blocked,because of time out\n", pcb.getPid());
+    }
+
+    // 把因为time out而阻塞的进程调度到就绪队列
+    public void timeOut2Ready()
+    {
+        if(blockQueue.isEmpty())
+        {
+            System.out.println("block queue is empty");
+            return;
+        }
+        blockQueue.forEach(item->{
+            if(item.getBlockReason().equals("time out"))
+            {
+                item.setBlockReason("");
+                item.setStatus(StatusEnum.READY.getCode());
+                System.out.printf("%s is tranfered to ready queue\n", item.getPid());
+            }
+        });
+    }
+
+
 
     // 模拟自动调度
     public void dispatch()
@@ -387,13 +383,9 @@ public class ProcessManager implements Observer {
     public void onAction(Event event) {
 
         // 状态改变
-        if(event instanceof StatusChangeEvent)
-        {
+        if(event instanceof StatusChangeEvent) {
             PCB pcb = (PCB)event.getSource();
-
             String loc = findProcessLoc(pcb);
-
-            // 调度
             dispatchProcess(pcb, loc);
             return;
         }
@@ -405,8 +397,7 @@ public class ProcessManager implements Observer {
             pcb.setStatus(StatusEnum.BLOCK.getCode());
             return;
         }
-
-
+        
         // 有资源释放了
         if(event instanceof FreeResourceEvent)
         {

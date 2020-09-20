@@ -13,6 +13,5 @@ public class Domain {
 
         while(true)
             commandResolver.resolve(scanner.next());
-
     }
 }

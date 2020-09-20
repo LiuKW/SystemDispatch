@@ -3,7 +3,6 @@ package event.impl;
 import event.Event;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import struct.PCB;
 
 @AllArgsConstructor

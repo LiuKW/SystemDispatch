@@ -24,20 +24,17 @@ public class Resource {
 
 
 
-
     // 回收资源
     public boolean recoveryResource(PCB pcb, int count)
     {
         if(!pcb.getResources().containsKey(name))
-        {
             //System.out.println("process not own this resource\n");
             return false;
-        }
+
         if(count > pcb.getResources().get(name))
-        {
             //System.out.println(pcb.getPid() + "has not enough resource to release\n");
             return false;
-        }
+
         num += count;
         int i = pcb.getResources().get(name).intValue();
         i -= count;
@@ -58,8 +55,8 @@ public class Resource {
         // 资源不足
         if(count > num)
         {
-            RequestFailEvent requestFailEvent = new RequestFailEvent(pcb);
             pcb.setBlockReason(name);
+            RequestFailEvent requestFailEvent = new RequestFailEvent(pcb);
             processManager.onAction(requestFailEvent);
             System.out.println("resources not enough, request failed, process is transfered to block queue");
             return false;
